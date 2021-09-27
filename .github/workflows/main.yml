@@ -49,7 +49,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run Inviwo Setup Action
-        uses: xeTaiz/setup-inviwo-action@v1
+        uses: xeTaiz/setup-inviwo-action@master
         with:
           cmake-flags: ${{ matrix.cmake }}
           cmake-generator: ${{ matrix.generator }}
