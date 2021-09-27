@@ -19,6 +19,9 @@ inputs:
   os-triplet:
     description: 'Descriptor of the OS to build for'
     required: true
+  gh-secret:
+    description: 'Pass through GH secret for NuGet Login'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -39,7 +42,7 @@ runs:
 
     - name: 'Setup NuGet Credentials'
       shell: bash
-      run: ${{ matrix.mono }} `vcpkg fetch nuget | tail -n 1` sources add -source "https://nuget.pkg.github.com/inviwo/index.json" -storepasswordincleartext -name "GitHub" -username "inviwo" -password "${{ secrets.GITHUB_TOKEN }}"
+      run: ${{ matrix.mono }} `vcpkg fetch nuget | tail -n 1` sources add -source "https://nuget.pkg.github.com/inviwo/index.json" -storepasswordincleartext -name "GitHub" -username "inviwo" -password "${{ inputs.gh-secret }}"
         
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
@@ -123,16 +126,6 @@ runs:
            -DIVW_USE_EXTERNAL_OPENEXR=ON
            ${{ inputs.cmake-flags }}
          buildWithCMake: false
-
-    - name: Error Logs Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: error-logs
-        path: |
-          build/CMakeFiles/CMakeOutput.log
-          build/CMakeFiles/CMakeError.log
-          build/vcpkg-manifest-install.log
-      if: ${{ failure() }}
 
     - name: Setup C++
       uses: Trass3r/setup-cpp@v1
