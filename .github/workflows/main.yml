@@ -54,6 +54,7 @@ jobs:
           cmake-flags: ${{ matrix.cmake }}
           cmake-generator: ${{ matrix.generator }}
           os-triplet: ${{ matrix.triplet }}
+          runner-os: ${{ runner.os }}
 
       # Runs a set of commands using the runners shell
       - name: Tests and Debug Prints
