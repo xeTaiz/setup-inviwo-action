@@ -41,12 +41,7 @@ runs:
       shell: bash
       run: >
         ${{ matrix.mono }} `vcpkg fetch nuget | tail -n 1`
-        sources add
-        -source "https://nuget.pkg.github.com/inviwo/index.json"
-        -storepasswordincleartext
-        -name "GitHub"
-        -username "inviwo"
-        -password "${{ secrets.GITHUB_TOKEN }}"
+        sources add -source "https://nuget.pkg.github.com/inviwo/index.json" -storepasswordincleartext -name "GitHub" -username "inviwo" -password "${{ secrets.GITHUB_TOKEN }}"
         
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
