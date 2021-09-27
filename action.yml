@@ -19,6 +19,9 @@ inputs:
   os-triplet:
     description: 'Descriptor of the OS to build for'
     required: true
+  runner-os:
+    description: 'OS of the runner. Either Windows, Linux or macOS'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -52,13 +55,13 @@ runs:
 
     - name: Apt Install
       shell: bash
-      if: runner.os == 'Linux'
+      if: inputs.runner-os == 'Linux'
       run: |
-        sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libglew-dev ninja-build doxygen-latex
+        sudo apt-get install -y libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libglew-dev ninja-build doxygen-latex
 
     - name: Brew Install
       shell: bash
-      if: runner.os == 'macOS'
+      if: inputs.runner-os == 'macOS'
       run: |
         brew install ninja doxygen
         brew install --cask basictex
@@ -66,7 +69,7 @@ runs:
         echo "$(dirname $(which latex))" >> $GITHUB_PATH
 
     - name: Install Scoop
-      if: runner.os == 'Windows'
+      if: inputs.runner-os == 'Windows'
       run: |
         Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
         scoop bucket add extras
@@ -74,17 +77,9 @@ runs:
         echo "~/scoop/shims" >> $GITHUB_PATH
         echo "$(Split-Path -Path (Get-Command dvips).Path -Parent)" >> $GITHUB_PATH
 
-#    - name: VCPKG Install
-#      shell: bash
-#      run: >
-#        vcpkg --triplet ${{ inputs.cmake-flags }} install
-#        assimp benchmark cimg eigen3 fmt freetype glfw3 glm gtest zlib
-#        hdf5[cpp,zlib] libjpeg-turbo libpng minizip nlohmann-json
-#        openexr pybind11 python3 tclap tiff tinydir tinyxml2 utfcpp
-
     - name: Glew Install
       shell: bash
-      if: runner.os != 'Linux'
+      if: inputs.runner-os != 'Linux'
       run: vcpkg --triplet ${{ inputs.cmake-flags }} install glew
 
     - name: Install Numpy
