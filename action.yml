@@ -88,7 +88,7 @@ runs:
          useVcpkgToolchainFile: true
          cmakeAppendedArgs: >
            -S inviwo
-           -DVCPKG_TARGET_TRIPLET='${{ inputs.cmake-flags }}'
+           -DVCPKG_TARGET_TRIPLET='${{ inputs.os-triplet }}'
            -DCMAKE_BUILD_TYPE=${{ inputs.build-type }}
            -DIVW_CFG_CMAKE_DEBUG=ON
            -DIVW_CFG_PRECOMPILED_HEADERS=OFF
