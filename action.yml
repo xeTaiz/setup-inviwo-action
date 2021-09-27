@@ -19,14 +19,9 @@ inputs:
   os-triplet:
     description: 'Descriptor of the OS to build for'
     required: true
-  runner-os:
-    description: 'OS of the runner. Either Windows, Linux or macOS'
-    required: true
 runs:
   using: "composite"
   steps:
-    - shell: bash
-      run: echo "testttt"
     - name: 'Restore artifacts, or setup vcpkg (do not install any package)'
       uses: lukka/run-vcpkg@v6
       with:
@@ -52,35 +47,24 @@ runs:
         -name "GitHub"
         -username "inviwo"
         -password "${{ secrets.GITHUB_TOKEN }}"
-
-    - name: Apt Install
-      shell: bash
-      if: inputs.runner-os == 'Linux'
-      run: |
-        sudo apt-get install -y libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libglew-dev ninja-build doxygen-latex
-
-    - name: Brew Install
-      shell: bash
-      if: inputs.runner-os == 'macOS'
-      run: |
-        brew install ninja doxygen
-        brew install --cask basictex
-        eval "$(/usr/libexec/path_helper)"
-        echo "$(dirname $(which latex))" >> $GITHUB_PATH
-
-    - name: Install Scoop
-      if: inputs.runner-os == 'Windows'
-      run: |
-        Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-        scoop bucket add extras
-        scoop install nsis doxygen latex
-        echo "~/scoop/shims" >> $GITHUB_PATH
-        echo "$(Split-Path -Path (Get-Command dvips).Path -Parent)" >> $GITHUB_PATH
-
-    - name: Glew Install
-      shell: bash
-      if: inputs.runner-os != 'Linux'
-      run: vcpkg --triplet ${{ inputs.cmake-flags }} install glew
+        
+    - name: Setup Dependencies (OS specific)
+      uses: knicknic/os-specific-run@v1
+      with:
+        macos: |
+          brew install ninja doxygen
+          brew install --cask basictex
+          eval "$(/usr/libexec/path_helper)"
+          echo "$(dirname $(which latex))" >> $GITHUB_PATH
+        linux: |
+          sudo apt-get install -y libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libglew-dev ninja-build doxygen-latex
+          vcpkg --triplet ${{ inputs.cmake-flags }} install glew
+        windows: |
+          Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+          scoop bucket add extras
+          scoop install nsis doxygen latex
+          echo "~/scoop/shims" >> $GITHUB_PATH
+          echo "$(Split-Path -Path (Get-Command dvips).Path -Parent)" >> $GITHUB_PATH
 
     - name: Install Numpy
       shell: bash
