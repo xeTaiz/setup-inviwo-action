@@ -74,7 +74,7 @@ runs:
 
     - uses: actions/checkout@v2
       with:
-        repository: inviwo/inviwo
+        repository: xeTaiz/inviwo-marketplace
         path: inviwo
         submodules: recursive
 
