@@ -61,3 +61,6 @@ jobs:
         run: |
           ls -l
           ls -l inviwo/
+          ls -l build/
+          ls -l build/bin
+          ls -l build/lib
