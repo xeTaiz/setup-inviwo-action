@@ -1,10 +1,6 @@
 name: 'Setup Inviwo'
 description: 'Sets up Inviwo with the recommended set of dependencies'
 inputs:
-  vcpkg-sha:
-    description: 'VCPKG Commit Hash for version control'
-    required: true
-    default: 'e6dcc079c81161786eb7b052209a2047e79f2c6c'
   build-type:
     description: "Build Type of Inviwo (Release, Debug)"
     required: true
@@ -19,23 +15,12 @@ inputs:
   os-triplet:
     description: 'Descriptor of the OS to build for'
     required: true
-  gh-secret:
-    description: 'Pass through GH secret for NuGet Login'
-    required: true
 runs:
   using: "composite"
   steps:
-    - name: 'Restore artifacts, or setup vcpkg (do not install any package)'
+    - name: 'Setup VCPKG (cached)'
       uses: lukka/run-vcpkg@v10
-      #with: 
-        #vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-        # vcpkgGitCommitId: ${{ inputs.vcpkg-sha }}
-        
 
-    # - name: 'Setup NuGet Credentials'
-    #   shell: bash
-    #   run: ${{ matrix.mono }} `vcpkg fetch nuget | tail -n 1` sources add -source "https://nuget.pkg.github.com/inviwo/index.json" -storepasswordincleartext -name "GitHub" -username "inviwo" -password "${{ inputs.gh-secret }}"
-        
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
       with:
