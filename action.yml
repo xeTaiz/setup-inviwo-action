@@ -18,8 +18,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: lukka/get-cmake@latest
+
     - name: 'Setup VCPKG (cached)'
       uses: lukka/run-vcpkg@v10
+      vcpkgJsonGlob: '**/setup-inviwo-action/vcpkg.json'
 
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
