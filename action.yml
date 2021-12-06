@@ -47,7 +47,6 @@ runs:
         linux: |
           sudo apt-get update
           sudo apt-get install -y libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev libglew-dev ninja-build doxygen-latex
-          vcpkg --triplet ${{ inputs.os-triplet }} install glew
         windows: |
           Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
           scoop bucket add extras
