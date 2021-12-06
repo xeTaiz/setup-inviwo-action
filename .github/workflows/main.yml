@@ -61,8 +61,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Tests and Debug Prints
         run: |
-          ls -l
-          ls -l inviwo/
-          ls -l build/
+          cat /home/runner/work/setup-inviwo-action/setup-inviwo-action/build/vcpkg-manifest-install.log
           ls -l build/bin
           ls -l build/lib
