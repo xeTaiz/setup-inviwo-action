@@ -27,8 +27,8 @@ runs:
   steps:
     - name: 'Restore artifacts, or setup vcpkg (do not install any package)'
       uses: lukka/run-vcpkg@v10
-      with: 
-        vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+      #with: 
+        #vcpkgDirectory: '${{ github.workspace }}/vcpkg'
         # vcpkgGitCommitId: ${{ inputs.vcpkg-sha }}
         
 
