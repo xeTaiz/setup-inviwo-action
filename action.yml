@@ -23,7 +23,7 @@ runs:
     - name: 'Setup VCPKG (cached)'
       uses: lukka/run-vcpkg@v10
       with:
-        vcpkgJsonGlob: '**/setup-inviwo-action/vcpkg.json'
+        vcpkgJsonGlob: '${{ github.workspace }}/vcpkg.json'
 
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
