@@ -66,6 +66,7 @@ runs:
 
     - name: Run CMake to install the dependencies specified in the vcpkg.json manifest and generate project file
       uses: lukka/run-cmake@v10
+      id: runcmake
       with:
          cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
          cmakeListsTxtPath: '${{ github.workspace }}/inviwo/CMakeLists.txt'
