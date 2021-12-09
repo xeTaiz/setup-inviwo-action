@@ -26,6 +26,7 @@ runs:
       with:
         vcpkgJsonGlob: '${{ github.workspace }}/inviwo/vcpkg.json'
         runVcpkgInstall: true
+        binaryCachePath: ${{ github.workspace }}/bincache
 
     - name: "log run-vcpkg"
       shell: bash
