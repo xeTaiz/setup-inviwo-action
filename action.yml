@@ -20,13 +20,18 @@ runs:
   steps:
     - uses: lukka/get-cmake@latest
 
+    - name: 'Mkdir bincache'
+      shell: bash
+      run: mkdir -p ${{ github.workspace }}/bincache
+
     - name: 'Setup VCPKG (cached)'
       id: runvcpkg
       uses: lukka/run-vcpkg@v10
       with:
-        vcpkgJsonGlob: '${{ github.workspace }}/inviwo/vcpkg.json'
-        runVcpkgInstall: true
+        vcpkgDirectory:  ${{ github.workspace }}/vcpkg
+        vcpkgJsonGlob:   ${{ github.workspace }}/inviwo/vcpkg.json'
         binaryCachePath: ${{ github.workspace }}/bincache
+        runVcpkgInstall: true
 
     - name: "log run-vcpkg"
       shell: bash
