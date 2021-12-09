@@ -26,6 +26,7 @@ runs:
         vcpkgJsonGlob: '${{ github.workspace }}/inviwo/vcpkg.json'
 
     - name: "log run-vcpkg"
+      shell: bash
       run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_DEFAULT_TRIPLET_OUT }}' "
 
     - name: Setup Dependencies (OS specific)
