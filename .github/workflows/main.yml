@@ -62,6 +62,6 @@ jobs:
       - name: Tests and Debug Prints
         if: always()
         run: |
-          cat /home/runner/work/setup-inviwo-action/setup-inviwo-action/build/vcpkg-manifest-install.log
+          cat ${{ github.workspace }}/build/vcpkg-manifest-install.log
           ls -l build/bin
           ls -l build/lib
