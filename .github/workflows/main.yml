@@ -44,6 +44,7 @@ jobs:
 
     env:
       VCPKG_DEFAULT_TRIPLET: ${{ matrix.triplet }}
+      VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -66,6 +67,7 @@ jobs:
         if: always()
         run: |
           ls -al ${{ github.workspace }}/vcpkg/
+          echo ${{ env.VCPKG_INSTALLED_DIR }}
           cat ${{ github.workspace }}/build/vcpkg-manifest-install.log
           ls -l ${{ github.workspace }}/build/bin
           ls -l ${{ github.workspace }}/build/lib
