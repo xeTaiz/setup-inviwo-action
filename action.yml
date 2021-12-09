@@ -18,24 +18,18 @@ inputs:
 runs:
   using: "composite"
   steps:
+  # SETUP DEPENDENCIES
     - uses: lukka/get-cmake@latest
 
-    - name: 'Mkdir bincache'
+    - name: Install Numpy
       shell: bash
-      run: mkdir -p ${{ github.workspace }}/bincache
+      run: pip3 install numpy
 
-    - name: 'Setup VCPKG (cached)'
-      id: runvcpkg
-      uses: lukka/run-vcpkg@v10
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
       with:
-        vcpkgDirectory:  ${{ github.workspace }}/vcpkg
-        vcpkgJsonGlob:   ${{ github.workspace }}/inviwo/vcpkg.json'
-        binaryCachePath: ${{ github.workspace }}/bincache
-        runVcpkgInstall: true
-
-    - name: "log run-vcpkg"
-      shell: bash
-      run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_DEFAULT_TRIPLET_OUT }}' "
+        version: 5.15.0
+        dir: ${{ github.workspace }}
 
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
@@ -55,22 +49,32 @@ runs:
           echo "~/scoop/shims" >> $GITHUB_PATH
           echo "$(Split-Path -Path (Get-Command dvips).Path -Parent)" >> $GITHUB_PATH
 
-    - name: Install Numpy
-      shell: bash
-      run: pip3 install numpy
-
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2
-      with:
-        version: 5.15.0
-        dir: ${{ github.workspace }}
-
+  # GRAB REPO
     - uses: actions/checkout@v2
       with:
         repository: xeTaiz/inviwo-marketplace
         path: inviwo
         submodules: recursive
 
+  # VCPKG
+    - name: 'Mkdir bincache'
+      shell: bash
+      run: mkdir -p ${{ github.workspace }}/bincache && cd inviwo
+
+    - name: 'Setup VCPKG (cached)'
+      id: runvcpkg
+      uses: lukka/run-vcpkg@v10
+      with:
+        vcpkgDirectory:  ${{ github.workspace }}/vcpkg
+        vcpkgJsonGlob:   ${{ github.workspace }}/inviwo/vcpkg.json'
+        binaryCachePath: ${{ github.workspace }}/bincache
+        runVcpkgInstall: true
+
+    - name: "log run-vcpkg"
+      shell: bash
+      run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_DEFAULT_TRIPLET_OUT }}' "
+
+  # RUN CMAKE
     - name: Run CMake to install the dependencies specified in the vcpkg.json manifest and generate project file
       uses: lukka/run-cmake@v10
       id: runcmake
