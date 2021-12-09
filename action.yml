@@ -25,6 +25,7 @@ runs:
       uses: lukka/run-vcpkg@v10
       with:
         vcpkgJsonGlob: '${{ github.workspace }}/inviwo/vcpkg.json'
+        runVcpkgInstall: true
 
     - name: "log run-vcpkg"
       shell: bash
