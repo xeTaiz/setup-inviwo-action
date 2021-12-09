@@ -63,5 +63,5 @@ jobs:
         if: always()
         run: |
           cat ${{ github.workspace }}/build/vcpkg-manifest-install.log
-          ls -l build/bin
-          ls -l build/lib
+          ls -l ${{ github.workspace }}/build/bin
+          ls -l ${{ github.workspace }}/build/lib

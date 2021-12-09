@@ -47,6 +47,12 @@ runs:
       shell: bash
       run: pip3 install numpy
 
+    - name: Log compilers
+      shell: bash
+      run: |
+        gcc --version
+        make --version
+
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
