@@ -65,7 +65,7 @@ jobs:
       - name: Tests and Debug Prints
         if: always()
         run: |
-          cat ${{ github.workspace }}/vcpkg/scripts/vcpkgTools.xml
+          ls -al ${{ github.workspace }}/vcpkg/
           cat ${{ github.workspace }}/build/vcpkg-manifest-install.log
           ls -l ${{ github.workspace }}/build/bin
           ls -l ${{ github.workspace }}/build/lib
