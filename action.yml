@@ -16,6 +16,8 @@ inputs:
     description: 'Descriptor of the OS to build for'
     required: true
 runs:
+  env:
+    VCPKG_DEFAULT_TRIPLET: ${{ inputs.os-triplet }}
   using: "composite"
   steps:
     - uses: lukka/get-cmake@latest
@@ -24,6 +26,9 @@ runs:
       uses: lukka/run-vcpkg@v10
       with:
         vcpkgJsonGlob: '${{ github.workspace }}/inviwo/vcpkg.json'
+
+    - name: "log run-vcpkg"
+      run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_DEFAULT_TRIPLET_OUT }}' "
 
     - name: Setup Dependencies (OS specific)
       uses: knicknic/os-specific-run@v1
@@ -59,19 +64,12 @@ runs:
         path: inviwo
         submodules: recursive
 
-    - name: Log compilers
-      shell: bash
-      run: |
-        export PATH=$PATH:/${{github.workspace}}/vcpkg/scripts
-        gcc --version
-        make --version
-
     - name: Run CMake to install the dependencies specified in the vcpkg.json manifest and generate project file
       uses: lukka/run-cmake@v10
       with:
          cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
          cmakeListsTxtPath: '${{ github.workspace }}/inviwo/CMakeLists.txt'
-         buildDirectory:    '${{github.workspace}}/build'
+         buildDirectory:    '${{ github.workspace }}/build'
          configurePreset:   'actions-${{ inputs.os-triplet }}'
          buildPreset:       'actions-${{ inputs.os-triplet }}'
          # This input tells run-cmake to consume the vcpkg.cmake toolchain file set by run-vcpkg.
