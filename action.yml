@@ -16,8 +16,6 @@ inputs:
     description: 'Descriptor of the OS to build for'
     required: true
 runs:
-  env:
-    VCPKG_DEFAULT_TRIPLET: ${{ inputs.os-triplet }}
   using: "composite"
   steps:
     - uses: lukka/get-cmake@latest
