@@ -47,12 +47,6 @@ runs:
       shell: bash
       run: pip3 install numpy
 
-    - name: Log compilers
-      shell: bash
-      run: |
-        gcc --version
-        make --version
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -64,6 +58,13 @@ runs:
         repository: xeTaiz/inviwo-marketplace
         path: inviwo
         submodules: recursive
+
+    - name: Log compilers
+      shell: bash
+      run: |
+        export PATH=$PATH:/${{github.workspace}}/vcpkg/scripts
+        gcc --version
+        make --version
 
     - name: Run CMake to install the dependencies specified in the vcpkg.json manifest and generate project file
       uses: lukka/run-cmake@v3
